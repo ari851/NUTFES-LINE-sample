@@ -59,7 +59,7 @@ function sendMessages(text) {
                 const haikin  = $('input[name="haikin"]').val();
                 const sukuwat = $('input[name="sukuwat"]').val();
                 
-                const msg = `"【送信内容】"\n${name}\n${udetate}\n${fukkin}\n${haikin}\n${sukuwat}`;
+                const msg = `【送信内容】\n${name}\n${udetate}\n${fukkin}\n${haikin}\n${sukuwat}`;
                 sendText(msg);
 
                 return false;
