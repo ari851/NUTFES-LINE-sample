@@ -16,7 +16,7 @@ function initializeLiff(liffId) {
             if (!liff.isInClient() && !liff.isLoggedIn()) {
                 window.alert("LINEアカウントにログインしてください。");
                 liff.login({redirectUri: location.href});
-            }else{
+            } else {
                 console.log('Login Success');
             }
         })
@@ -25,57 +25,44 @@ function initializeLiff(liffId) {
         });
 }
 
+const params = new URLSearchParams(window.location.search);
+const key = params.get('key');
 
-        const params = new URLSearchParams(window.location.search);
-        const key = params.get('key');
-
-        
-            $('form').submit(function () {
-                const name    = $('input[name="name"]').val();
-                const udetate = $('input[name="udetate"]').val();
-                const fukkin  = $('input[name="fukkin"]').val();
-                const haikin  = $('input[name="haikin"]').val();
-                const sukuwat = $('input[name="sukuwat"]').val();
+$('form').submit(function () {
+    const name    = $('input[name="name"]').val();
+    const udetate = $('input[name="udetate"]').val();
+    const fukkin  = $('input[name="fukkin"]').val();
+    const haikin  = $('input[name="haikin"]').val();
+    const sukuwat = $('input[name="sukuwat"]').val();
                 
-                const msg = `【送信内容】\n${name}\n${udetate}\n${fukkin}\n${haikin}\n${sukuwat}`;
-                sendText(msg);
+    const msg = `【送信内容】\n${name}\n${udetate}\n${fukkin}\n${haikin}\n${sukuwat}`;
+    sendText(msg);
 
-                return false;
-            });
-
+    return false;
+});
 
 function sendText(text) {
     if (liff.isInClient()) {
-        sendMessages(text);
+        liff.sendMessages([{
+            'type': 'text',
+            'text': text
+        }]).then(function () {
+            liff.closeWindow();
+        }).catch(function (error) {
+            console.log('Failed to send message: ', error);
+            if (error.code === "ECONNRESET") {
+                window.alert('送信に失敗しました。');
+            }
+        });
     } else {
-        shareTargetPicker(text);
+        liff.shareTargetPicker([{
+            'type': 'text',
+            'text': text
+        }]).catch((error) => {
+            console.log('Failed to share target picker: ', error);
+            if (error.code === "ECONNRESET") {
+                window.alert('送信に失敗しました。');
+            }
+        });
     }
-}
-
-
-
-// LINEトーク画面上でメッセージ送信
-function sendMessages(text) {
-    console.log('in sendMessages()');
-    liff.sendMessages([{
-        'type': 'text',
-        'text': text
-    }]).then(function () {
-        liff.closeWindow();
-    }).catch(function (error) {
-        window.alert('Failed to send message ' + error);
-    });
-}
-
-
-// Webブラウザからメッセージ送信
-function shareTargetPicker(text) {
-    console.log('in shareTargetPicker');
-    liff.shareTargetPicker([{
-        'type': 'text',
-        'text': text
-    }]).catch((error) => {
-        console.log(error);
-        window.alert('Failed to send message ' + error);
-    });
 }
