@@ -25,15 +25,6 @@ function initializeLiff(liffId) {
         });
 }
 
-function sendText(text) {
-    if (!liff.isInClient()) {
-        shareTargetPicker(text);
-    } else {
-        sendMessages(text);
-    }
-}
-
-
 
         const params = (new URL(document.location)).searchParams;
         const key = params.get('key');
@@ -52,6 +43,16 @@ function sendText(text) {
                 return false;
             });
         });
+
+
+function sendText(text) {
+    if (!liff.isInClient()) {
+        shareTargetPicker(text);
+    } else {
+        sendMessages(text);
+    }
+}
+
 
 
 
