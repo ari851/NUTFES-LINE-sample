@@ -26,10 +26,10 @@ function initializeLiff(liffId) {
 }
 
 
-        const params = (new URL(document.location)).searchParams;
+        const params = new URLSearchParams(window.location.search);
         const key = params.get('key');
 
-        $(function () {
+        
             $('form').submit(function () {
                 const name    = $('input[name="name"]').val();
                 const udetate = $('input[name="udetate"]').val();
@@ -42,17 +42,15 @@ function initializeLiff(liffId) {
 
                 return false;
             });
-        });
 
 
 function sendText(text) {
-    if (!liff.isInClient()) {
-        shareTargetPicker(text);
-    } else {
+    if (liff.isInClient()) {
         sendMessages(text);
+    } else {
+        shareTargetPicker(text);
     }
 }
-
 
 
 
@@ -81,4 +79,3 @@ function shareTargetPicker(text) {
         window.alert('Failed to send message ' + error);
     });
 }
-
