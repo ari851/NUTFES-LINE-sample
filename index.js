@@ -15,6 +15,12 @@ function onSubmit() {
   // 確認のアラートを表示して、OKを選択した場合にフォームを送信する
   var message = "入力内容を確認してください\n\n名前：" + name + "\n腕立て：" + udetate + "\n腹筋：" + fukkin + "\n背筋：" + haikin + "\nスクワット：" + sukuwat;
   if (confirm(message)) {
-    document.myform.submit();
+    const text = document.myform.value;
+
+    const msg = text;
+    console.log(msg);
+    sendText(msg);
+
+    return false;
   }
 }
